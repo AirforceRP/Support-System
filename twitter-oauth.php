@@ -7,9 +7,9 @@ if (isset($_GET['code']) && !empty($_GET['code'])) {
     // Execute cURL request to retrieve the access token
     $params = [
         'code' => $_GET['code'],
-        'client_id' => 'twitter_oauth_client_id',
-        'client_secret' => '',
-        'redirect_uri' => '',
+        'client_id' => twitter_oauth_client_id,
+        'client_secret' => twitter_oauth_client_secret,
+        'redirect_uri' => twitter_oauth_redirect_uri,
         'grant_type' => 'authorization_code'
     ];
     $ch = curl_init();
@@ -84,8 +84,8 @@ if (isset($_GET['code']) && !empty($_GET['code'])) {
 } else {
     // Define params and redirect to Twitter Authentication page
     $params = [
-        'oauth_token' => '',
-        'redirect_uri' => ''
+        'oauth_token' => twitter_oauth_client_id,
+        'redirect_uri' => twitter_oauth_redirect_uri
     ];
     header('Location: https://api.twitter.com/oauth/authenticate?' . http_build_query($params));
     exit;

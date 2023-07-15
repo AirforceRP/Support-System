@@ -54,6 +54,13 @@ define('google_oauth_client_id','');
 define('google_oauth_client_secret','');
 // The URL to the Google OAuth file.
 define('google_oauth_redirect_uri','');
+/* Twitter Oauth */
+// The OAuth client ID associated with your API Twitter Developer account.
+define('twitter_oauth_client_id', '');
+// The OAuth client secret associated with your API Twitter Developer account.
+define('twitter_oauth_client_secret','');
+// The URL to the Twitter OAuth file.
+define('twitter_oauth_redirect_uri','');
 // The Livechat Script ON or OFF TRUE = ONLINE FALSE = OFFLINE
 define('livechat_ONLINE',true);
 // Max number of messages

@@ -7,7 +7,7 @@ if (isset($_GET['code']) && !empty($_GET['code'])) {
     // Execute cURL request to retrieve the access token
     $params = [
         'code' => $_GET['code'],
-        'client_id' => '',
+        'client_id' => 'twitter_oauth_client_id',
         'client_secret' => '',
         'redirect_uri' => '',
         'grant_type' => 'authorization_code'

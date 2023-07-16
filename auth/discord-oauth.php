@@ -1,5 +1,5 @@
 <?php
-include 'functions.php';
+include '../functions.php';
 
 // Connect to MySQL using the below function
 $pdo = pdo_connect_mysql();

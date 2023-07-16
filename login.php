@@ -153,7 +153,7 @@ if (isset($_POST['register'], $_POST['name'], $_POST['password'], $_POST['cpassw
 
             <button type="submit" name="login" class="btn">Login</button>
             
-            <a href="google-oauth.php" class="gl-btn"><i class="fa-brands fa-google"></i>Login with Google</a>
+            <a href="/auth/google-oauth.php" class="gl-btn"><i class="fa-brands fa-google"></i>Login with Google</a>
 
         </form>
 
@@ -183,7 +183,7 @@ if (isset($_POST['register'], $_POST['name'], $_POST['password'], $_POST['cpassw
 
             <button type="submit" name="register" class="btn">Register</button>
             
-            <a href="google-oauth.php" class="gl-btn"><i class="fa-brands fa-google"></i>Register with Google</a>
+            <a href="/auth/google-oauth.php" class="gl-btn"><i class="fa-brands fa-google"></i>Register with Google</a>
 
         </form>
 

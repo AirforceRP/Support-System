@@ -1,6 +1,6 @@
 <?php
 // Your MySQL database hostname.
-define('db_host','localhost');
+define('db_host','');
 // Your MySQL database username.
 define('db_user','');
 // Your MySQL database password.
@@ -61,6 +61,29 @@ define('twitter_oauth_client_id', '');
 define('twitter_oauth_client_secret','');
 // The URL to the Twitter OAuth file.
 define('twitter_oauth_redirect_uri','');
+/* Discord Oauth */
+// The OAuth client ID associated with your API Twitter Developer account.
+define('discord_oauth_client_id', '');
+// The OAuth client secret associated with your API Twitter Developer account.
+define('discord_oauth_client_secret','');
+// The URL to the Twitter OAuth file.
+define('discord_oauth_redirect_uri','');
+/* GitHub Oauth */
+// The OAuth client ID associated with your API Twitter Developer account.
+define('github_oauth_client_id', '');
+// The OAuth client secret associated with your API Twitter Developer account.
+define('github_oauth_client_secret','');
+// The URL to the Twitter OAuth file.
+define('github_oauth_redirect_uri','');
+/* Facebook Oauth */
+// The OAuth client ID associated with your API Twitter Developer account.
+define('facebook_oauth_client_id', '');
+// The OAuth client secret associated with your API Twitter Developer account.
+define('facebook_oauth_client_secret','');
+// The URL to the Twitter OAuth file.
+define('facebook_oauth_redirect_uri','');
+
+
 // The Livechat Script ON or OFF TRUE = ONLINE FALSE = OFFLINE
 define('livechat_ONLINE',true);
 // Max number of messages

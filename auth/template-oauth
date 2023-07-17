@@ -1,5 +1,5 @@
 <?php
-include 'functions.php';
+include '../functions.php';
 // Connect to MySQL using the below function
 $pdo = pdo_connect_mysql();
 // If the captured code param exists and is valid

@@ -47,20 +47,6 @@ define('smtp_port','');
 define('smtp_user','');
 // Your SMTP Password.
 define('smtp_pass','');
-/* Google OAuth */
-// The OAuth client ID associated with your API console account.
-define('google_oauth_client_id','');
-// The OAuth client secret associated with your API console account.
-define('google_oauth_client_secret','');
-// The URL to the Google OAuth file.
-define('google_oauth_redirect_uri','');
-/* Twitter Oauth */
-// The OAuth client ID associated with your API Twitter Developer account.
-define('twitter_oauth_client_id', '');
-// The OAuth client secret associated with your API Twitter Developer account.
-define('twitter_oauth_client_secret','');
-// The URL to the Twitter OAuth file.
-define('twitter_oauth_redirect_uri','');
 /* Discord Oauth */
 // The OAuth client ID associated with your API Twitter Developer account.
 define('discord_oauth_client_id', '');
@@ -68,13 +54,6 @@ define('discord_oauth_client_id', '');
 define('discord_oauth_client_secret','');
 // The URL to the Twitter OAuth file.
 define('discord_oauth_redirect_uri','');
-/* GitHub Oauth */
-// The OAuth client ID associated with your API Twitter Developer account.
-define('github_oauth_client_id', '');
-// The OAuth client secret associated with your API Twitter Developer account.
-define('github_oauth_client_secret','');
-// The URL to the Twitter OAuth file.
-define('github_oauth_redirect_uri','');
 /* Facebook Oauth */
 // The OAuth client ID associated with your API Twitter Developer account.
 define('facebook_oauth_client_id', '');
@@ -82,6 +61,34 @@ define('facebook_oauth_client_id', '');
 define('facebook_oauth_client_secret','');
 // The URL to the Twitter OAuth file.
 define('facebook_oauth_redirect_uri','');
+/* GitHub Oauth */
+// The OAuth client ID associated with your API Twitter Developer account.
+define('github_oauth_client_id', '');
+// The OAuth client secret associated with your API Twitter Developer account.
+define('github_oauth_client_secret','');
+// The URL to the Twitter OAuth file.
+define('github_oauth_redirect_uri','');
+/* Google OAuth */
+// The OAuth client ID associated with your API console account.
+define('google_oauth_client_id','');
+// The OAuth client secret associated with your API console account.
+define('google_oauth_client_secret','');
+// The URL to the Google OAuth file.
+define('google_oauth_redirect_uri','');
+/* steamauth */
+// The Steam API Key
+define('steamauth_openid_key', '');
+// The URL to the Steam OpenID file.
+define('steamauth_openid_uri', '');
+/* Twitter Oauth */
+// The OAuth client ID associated with your API Twitter Developer account.
+define('twitter_oauth_client_id', '');
+// The OAuth client secret associated with your API Twitter Developer account.
+define('twitter_oauth_client_secret','');
+// The URL to the Twitter OAuth file.
+define('twitter_oauth_redirect_uri','');
+
+
 
 
 // The Livechat Script ON or OFF TRUE = ONLINE FALSE = OFFLINE

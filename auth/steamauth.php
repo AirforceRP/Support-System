@@ -5,7 +5,7 @@ include '../functions.php';
 // Connect to MySQL using the below function
 $pdo = pdo_connect_mysql();
 
-$openid = new LightOpenID();
+$openid = new LightOpenID(steamauth_openid_redirect_uri);
 $openid->identity = 'http://steamcommunity.com/openid';
 
 // If the captured SteamID exists and is valid

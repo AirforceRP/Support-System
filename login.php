@@ -1,3 +1,13 @@
+<html>
+<head>
+     <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+    <!-- FontAwesome CSS CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-V6SXTx5M7XUol+eAARvnnKzeUfFheT/50dVBNKHyKZ1kzRrFiz+JUq3mdJFONRq1yWs2Q4Wbj1ER7RQ9VfQs6g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body>    
 <?php
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
@@ -190,3 +200,5 @@ if (isset($_POST['register'], $_POST['name'], $_POST['password'], $_POST['cpassw
     </div>
 
 </div>
+</body>
+</html>

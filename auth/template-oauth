@@ -22,7 +22,7 @@ if (isset($_GET['code']) && !empty($_GET['code'])) {
     $response = json_decode($response, true);
     // Make sure access token is valid
     if (isset($response['access_token']) && !empty($response['access_token'])) {
-        // Execute cURL request to retrieve the user info associated with the template account
+        // Execute cURL request to retrieve the user info associated with the provider account
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, ');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -41,24 +41,24 @@ if (isset($_GET['code']) && !empty($_GET['code'])) {
             // If the account exists...
             if ($account) {
                 // Account exists! Bind the SQL data
-                $template_name = $account['full_name'];
+                $provider_name = $account['full_name'];
                 $role = $account['role'];
                 $id = $account['id'];
             } else {
                 // Insert new account
                 $username = '';
-                // Determine template name and remove all special characters
-                $template_name = '';
-                $template_name .= isset($profile['given_name']) ? preg_replace('/[^a-zA-Z0-9]/s', '', $profile['given_name']) : '';
-                $template_name .= $template_name ? ' ' : '';
-                $template_name .= isset($profile['family_name']) ? preg_replace('/[^a-zA-Z0-9]/s', '', $profile['family_name']) : '';
+                // Determine provider name and remove all special characters
+                $provider_name = '';
+                $provider_name .= isset($profile['given_name']) ? preg_replace('/[^a-zA-Z0-9]/s', '', $profile['given_name']) : '';
+                $provider_name .= $provider_name ? ' ' : '';
+                $provider_name .= isset($profile['family_name']) ? preg_replace('/[^a-zA-Z0-9]/s', '', $profile['family_name']) : '';
                 // Default role
                 $role = 'Member';
                 // Generate a random password
                 $password = password_hash(uniqid() . $date, PASSWORD_DEFAULT);
                 // Account doesn't exist, create it
                 $stmt = $pdo->prepare('INSERT INTO accounts (full_name, password, email, role) VALUES (?, ?, ?, ?)');
-                $stmt->execute([ $template_name, $password, $profile['email'], $role ]);
+                $stmt->execute([ $provider_name, $password, $profile['email'], $role ]);
                 // Account ID
                 $id = $pdo->lastInsertId();
             }
@@ -68,7 +68,7 @@ if (isset($_GET['code']) && !empty($_GET['code'])) {
             $_SESSION['account_id'] = $id;
             $_SESSION['account_role'] = $role;
             $_SESSION['account_email'] = $profile['email'];
-            $_SESSION['account_name'] = $template_name;
+            $_SESSION['account_name'] = $provider_name;
             // Chat system
             $_SESSION['chat_widget_account_loggedin'] = TRUE;
             $_SESSION['chat_widget_account_id'] = $id;
@@ -84,7 +84,7 @@ if (isset($_GET['code']) && !empty($_GET['code'])) {
         exit('Invalid access token! Please try again later!');
     }
 } else {
-    // Define params and redirect to template Authentication page
+    // Define params and redirect to provider Authentication page
     $params = [
         'response_type' => 'code',
         'client_id' => 

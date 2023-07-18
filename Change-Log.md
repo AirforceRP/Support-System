@@ -22,4 +22,4 @@ Description of changes made in this version:
 - Improved error handling and error messages related to OAuth authentication to provide better user feedback.
 
 
-Couldent add a transfer to another agent this update using the Next update Hopefully
+couldn't add a transfer to another agent this update using the Next update Hopefully

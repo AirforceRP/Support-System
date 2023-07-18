@@ -8,7 +8,7 @@ First Version of the Software
 
 
 Version 1.0.0.2
-Date: 7/17/23
+Date: 7/18/23 at 3:00 CST
 
 Description of changes made in this version:
 
@@ -20,3 +20,6 @@ Description of changes made in this version:
 - Integrated OAuth authorization flow to securely access user information from the respective platforms.
 - Implemented token management and storage for OAuth authentication to ensure secure and reliable user sessions.
 - Improved error handling and error messages related to OAuth authentication to provide better user feedback.
+
+
+Couldent add a transfer to another agent this update using the Next update Hopefully

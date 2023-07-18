@@ -80,16 +80,20 @@ define('google_oauth_redirect_uri','');
 define('steamauth_openid_key', '');
 // The URL to the Steam OpenID file.
 define('steamauth_openid_redirect_uri', '');
-/* Twitter Oauth */
+/* Twitter OAuth */
 // The OAuth client ID associated with your API Twitter Developer account.
 define('twitter_oauth_client_id', '');
 // The OAuth client secret associated with your API Twitter Developer account.
 define('twitter_oauth_client_secret','');
 // The URL to the Twitter OAuth file.
 define('twitter_oauth_redirect_uri','');
-
-
-
+/* Microsoft OAuth */
+// The OAuth client ID associated with your API Microsoft Developer account.
+define('microsoft_oauth_client_id', '');
+// The OAuth client secret associated with your API Microsoft Developer account.
+define('microsoft_oauth_client_secret', '');
+// The URL to the Microsoft OAuth file.
+define('microsoft_oauth_client_redirect_uri', '');
 
 // The Livechat Script ON or OFF TRUE = ONLINE FALSE = OFFLINE
 define('livechat_ONLINE',true);

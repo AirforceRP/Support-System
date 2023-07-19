@@ -18,8 +18,7 @@ class LiveSupportChat {
                 'find_conversation': 'find_conversation.php',
                 'post_message': 'post_message.php',
                 'notifications': 'notifications.php',
-                'logout': 'logout.php',
-                'transfer': 'transfer.php'
+                'logout': 'logout.php'
             }
         };
         // Assign new options
@@ -102,15 +101,6 @@ class LiveSupportChat {
     // AJAX method that will fetch the conversation associated with the user and ID param
     fetchConversation(id, callback = () => {}) {
         fetch(this.phpDirectoryUrl + this.files['conversation'] + `${this.files['conversation'].includes('?')?'&':'?'}id=` + id, { cache: 'no-store' }).then(response => response.text()).then(data => callback(data));
-    }
-
-    // AJAX method that will transfer the conversation to another agent
-    transferConversation(id, agentId, callback = () => {}) {
-        fetch(this.phpDirectoryUrl + this.files['transfer'], {
-            cache: 'no-store',
-            method: 'POST',
-            body: new FormData().append('id', id).append('agentId', agentId)
-        }).then(response => response.text()).then(data => callback(data));
     }
 
     // Retrieve a conversation method
@@ -219,7 +209,7 @@ class LiveSupportChat {
         });
     }
 
-    // Update method that will update various aspects of the chat widget every X milliseconds
+    // Update method that will update various aspects of the chat widget every X miliseconds
     update() {
         // If the current tab is 2
         if (this.currentChatWidgetTab == 2) {
@@ -229,7 +219,7 @@ class LiveSupportChat {
                 this.container.querySelector('.chat-widget-conversations').innerHTML = doc.querySelector('.chat-widget-conversations').innerHTML;
                 this._eventHandlers();
             }); 
-        // If the current tab is 3 and the conversation ID variable is not NULL               
+        // If the current tab is 3 and the conversation ID variable is not NUll               
         } else if (this.currentChatWidgetTab == 3 && this.conversationId != null) {
             // Use AJAX to update the conversation  
             let scrollPosition = null;
@@ -293,179 +283,191 @@ class LiveSupportChat {
     // Close chat widget method
     closeChatWidget() {
         this.container.classList.remove('open');
-        // Animate the chat widget
-        this.container.addEventListener('transitionend', () => {
-            this.container.style.display = 'none';
-        }, { once: true });
+        this.status = 'Idle';
     }
 
-    // Select chat widget tab method
-    selectChatWidgetTab(tab) {
-        // Hide all tabs
-        this.container.querySelectorAll('.chat-widget-tab').forEach(element => element.style.display = 'none');
-        // Display the selected tab
-        this.container.querySelector(`.chat-widget-tab:nth-child(${tab})`).style.display = 'block';
-        // Update the current chat widget tab variable
-        this.currentChatWidgetTab = tab;
+    // Select chat tab - it will be used to smoothly transition between tabs
+    selectChatWidgetTab(value) {
+        // Update the current tab variable
+        this.currentChatWidgetTab = value;
+        // Select all tab elements and add the CSS3 property transform
+        this.container.querySelectorAll('.chat-widget-tab').forEach(element => element.style.transform = `translateX(-${(value-1)*100}%)`);
+        // If the user is on the first tab, hide the prev tab button element
+        this.container.querySelector('.previous-chat-tab-btn').style.display = value > 1 ? 'block' : 'none';
+        // Update the conversation ID variable if the user is on the first or second tab
+        if (value == 1 || value == 2) {
+            this.conversationId = null;
+        }
+        // If the user is on the login form tab (tab 1), remove the secret code cookie (logout)
+        if (value == 1) {
+            this.logOutUser();
+        }
     }
 
-    // Event handlers method
-    _eventHandlers() {
-        // Event handler for opening the chat widget
-        this.openWidgetBtn.onclick = event => {
-            event.preventDefault();
-            this.openChatWidget();
-        };
-        // Event handler for closing the chat widget
-        this.container.querySelector('.close-chat-widget-btn').onclick = event => {
-            event.preventDefault();
-            this.closeChatWidget();
-        };
-        // Event handler for switching between tabs
-        this.container.querySelectorAll('.chat-widget-header a').forEach(element => {
-            element.onclick = event => {
-                event.preventDefault();
-                if (element.classList.contains('previous-chat-tab-btn')) {
-                    let prevTab = this.currentChatWidgetTab - 1;
-                    if (prevTab < 1) {
-                        prevTab = 3;
-                    }
-                    this.selectChatWidgetTab(prevTab);
-                } else {
-                    let nextTab = this.currentChatWidgetTab + 1;
-                    if (nextTab > 3) {
-                        nextTab = 1;
-                    }
-                    this.selectChatWidgetTab(nextTab);
-                }
-            };
-        });
-        // Event handler for authenticating the user
-        this.container.querySelector('.chat-widget-login-tab form').onsubmit = event => {
-            event.preventDefault();
-            this.authenticateUser(event.target, data => {
-                if (data == 'success') {
-                    this.container.querySelector('.chat-widget-login-tab .msg').innerHTML = '';
-                    this.container.querySelector('.chat-widget-login-tab form').reset();
-                    this.fetchConversations(data => {
-                        this.status = 'Idle';
-                        this.container.querySelector('.chat-widget-conversations-tab').innerHTML = data;
-                        this.selectChatWidgetTab(2);
-                        this._eventHandlers();
-                    });
-                } else {
-                    this.container.querySelector('.chat-widget-login-tab .msg').innerHTML = data;
-                }
-            });
-        };
-        // Event handler for logging out the user
-        this.container.querySelector('.chat-widget-conversations-tab .logout-btn').onclick = event => {
-            event.preventDefault();
-            this.logOutUser(data => {
-                if (data == 'success') {
-                    this.status = 'Offline';
-                    this.container.querySelector('.chat-widget-conversations-tab').innerHTML = '';
-                    this.selectChatWidgetTab(1);
-                }
-            });
-        };
-        // Event handler for selecting a conversation
-        this.container.querySelectorAll('.chat-widget-conversation').forEach(element => {
-            element.onclick = event => {
-                event.preventDefault();
-                this.getConversation(element.dataset.id);
-            };
-        });
-        // Event handler for transferring a conversation
-        this.container.querySelectorAll('.chat-widget-transfer-conversation').forEach(element => {
-            element.onclick = event => {
-                event.preventDefault();
-                let agentId = prompt('Enter the agent ID to transfer the conversation to:');
-                if (agentId) {
-                    this.transferConversation(element.dataset.id, agentId, data => {
-                        if (data == 'success') {
-                            this.container.querySelector('.chat-widget-conversation-tab').innerHTML = '';
-                            this.selectChatWidgetTab(2);
-                        }
-                    });
-                }
-            };
-        });
-    }
+    /* Below are class methods for easy access to the options that are declared in the constructor */
 
-    // Getter for the auto_login option
-    get autoLogin() {
-        return this.options.auto_login;
-    }
-
-    // Getter for the php_directory_url option
     get phpDirectoryUrl() {
         return this.options.php_directory_url;
     }
 
-    // Getter for the status option
-    get status() {
-        return this.options.status;
+    set phpDirectoryUrl(value) {
+        this.options.php_directory_url = value;
     }
 
-    // Setter for the status option
-    set status(value) {
-        this.options.status = value;
-    }
-
-    // Getter for the update_interval option
-    get updateInterval() {
-        return this.options.update_interval;
-    }
-
-    // Getter for the current_chat_widget_tab option
     get currentChatWidgetTab() {
         return this.options.current_chat_widget_tab;
     }
 
-    // Setter for the current_chat_widget_tab option
     set currentChatWidgetTab(value) {
         this.options.current_chat_widget_tab = value;
     }
 
-    // Getter for the conversation_id option
     get conversationId() {
         return this.options.conversation_id;
     }
 
-    // Setter for the conversation_id option
     set conversationId(value) {
         this.options.conversation_id = value;
     }
 
-    // Getter for the notifications option
+    get files() {
+        return this.options.files;
+    }
+
+    set files(value) {
+        this.options.files = value;
+    }
+
+    get container() {
+        return this.options.container;
+    }
+
+    set container(value) {
+        this.options.container = value;
+    }
+
+    get status() {
+        return this.options.status;
+    }
+
+    set status(value) {
+        this.options.status = value;
+    }
+
     get notifications() {
         return this.options.notifications;
     }
 
-    // Getter for the files object
-    get files() {
-        return this.options.files;
+    set notifications(value) {
+        this.options.notifications = value;
     }
-}
 
-// Usage example
-let liveSupportChat = new LiveSupportChat({
-    auto_login: true,
-    php_directory_url: 'path/to/php/files/',
-    status: 'Idle',
-    update_interval: 5000,
-    current_chat_widget_tab: 1,
-    conversation_id: null,
-    notifications: true,
-    files: {
-        'authenticate': 'authenticate.php',
-        'conversation': 'conversation.php',
-        'conversations': 'conversations.php',
-        'find_conversation': 'find_conversation.php',
-        'post_message': 'post_message.php',
-        'notifications': 'notifications.php',
-        'logout': 'logout.php',
-        'transfer': 'transfer.php'
+    get autoLogin() {
+        return this.options.auto_login;
     }
-});
+
+    set autoLogin(value) {
+        this.options.auto_login = value;
+    }
+
+    // Event handler method - Add events to all the chat widget interactive elements
+    _eventHandlers() {
+        // Open chat widget event
+        this.openWidgetBtn.onclick = event => {
+            event.preventDefault();
+            this.openChatWidget();
+        };
+        // Close button OnClick event handler
+        if (this.container.querySelector('.close-chat-widget-btn')) {
+            this.container.querySelector('.close-chat-widget-btn').onclick = event => {
+                event.preventDefault();
+                // Close the chat
+                this.closeChatWidget();
+            };
+        }
+        // Previous tab button OnClick event handler
+        if (this.container.querySelector('.previous-chat-tab-btn')) {
+            this.container.querySelector('.previous-chat-tab-btn').onclick = event => {
+                event.preventDefault();
+                // Transition to the respective page
+                this.selectChatWidgetTab(this.currentChatWidgetTab-1);
+            };
+        }
+        // New chat button OnClick event handler
+        if (this.container.querySelector('.chat-widget-new-conversation')) {
+            this.container.querySelector('.chat-widget-new-conversation').onclick = event => {
+                event.preventDefault();
+                // Update the status
+                this.status = 'Waiting';
+                // Notify the user
+                this.container.querySelector('.chat-widget-conversation-tab').innerHTML = `
+                <div class="chat-widget-messages">
+                    <div class="chat-widget-message">Please wait...</div>
+                </div>
+                `;
+                // Transition to the conversation tab (tab 3)
+                this.selectChatWidgetTab(3);                
+            };
+        }
+        // Iterate the conversations and add the OnClick event handler to each element
+        if (this.container.querySelectorAll('.chat-widget-user')) {
+            this.container.querySelectorAll('.chat-widget-user').forEach(element => {
+                element.onclick = event => {
+                    event.preventDefault();
+                    // Get the conversation
+                    this.getConversation(element.dataset.id);
+                };
+            });
+        }
+        // Ensure the login form exists
+        if (this.container.querySelector('.chat-widget-login-tab form')) {
+            // Login form submit event
+            this.container.querySelector('.chat-widget-login-tab form').onsubmit = event => {
+                event.preventDefault();
+                // Authenticate the user
+                this.authenticateUser(this.container.querySelector('.chat-widget-login-tab form'), data => {
+                    // If the response includes the "operator" string
+                    if (data.includes('MSG_LOGIN_REQUIRED')) {
+                        // Show the password field
+                        this.container.querySelector('.chat-widget-login-tab .msg').insertAdjacentHTML('beforebegin', '<input type="password" name="password" placeholder="Your Password" required>');
+                    } else if (data.includes('MSG_CREATE_SUCCESS')) {
+                        // New user
+                        // Authentication success! Execute AJAX request to retrieve the user's conversations
+                        this.fetchConversations(data => {
+                            // Update the status
+                            this.status = 'Waiting';
+                            // Notify the user
+                            this.container.querySelector('.chat-widget-conversation-tab').innerHTML = `
+                            <div class="chat-widget-messages">
+                                <div class="chat-widget-message">Please wait...</div>
+                            </div>
+                            `;
+                            // Update the conversations tab content
+                            this.container.querySelector('.chat-widget-conversations-tab').innerHTML = data;
+                            // Execute the conversation handler function
+                            this._eventHandlers();
+                            // Transition to the conversation tab (tab 3)
+                            this.selectChatWidgetTab(3);  
+                        });
+                    } else if (data.includes('MSG_SUCCESS')) {
+                        // Authentication success! Execute AJAX request to retrieve the user's conversations
+                        this.fetchConversations(data => {
+                            // Update the status
+                            this.status = 'Idle';
+                            // Update the conversations tab content
+                            this.container.querySelector('.chat-widget-conversations-tab').innerHTML = data;
+                            // Execute the conversation handler function
+                            this._eventHandlers();
+                            // Transition to the conversations tab
+                            this.selectChatWidgetTab(2);
+                        });
+                    } else {
+                        // Authentication failed! Show the error message on the form
+                        this.container.querySelector('.chat-widget-login-tab .msg').innerHTML = data;
+                    }
+                });
+            };
+        }
+    }
+
+}

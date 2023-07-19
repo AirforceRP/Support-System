@@ -8,7 +8,7 @@ First Version of the Software
 
 
 Version 1.0.0.2
-Date: 7/18/23 at 10:00 CST
+Date: 7/18/23 at 11:00 CST
 
 Description of changes made in this version:
 

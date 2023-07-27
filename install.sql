@@ -96,7 +96,8 @@ CREATE TABLE `messages` (
   `msg` text NOT NULL,
   `attachments` text NOT NULL,
   `submit_date` datetime NOT NULL,
-  `is_read` tinyint(1) NOT NULL DEFAULT 0
+  `is_read` tinyint(1) NOT NULL DEFAULT 0,
+  `latest_message` datetime NOT NULL DEFAULT current_timestamp(),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --

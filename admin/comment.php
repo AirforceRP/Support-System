@@ -5,7 +5,8 @@ $comment = [
     'msg' => '',
     'ticket_id' => 0,
     'account_id' => 0,
-    'created' => date('Y-m-d\TH:i:s')
+    'created' => date('Y-m-d\TH:i:s'),
+    'lastest_message' => date('Y-m-d\TH:i:s')
 ];
 // Retrieve all accounts from the database
 $accounts = $pdo->query('SELECT * FROM accounts')->fetchAll(PDO::FETCH_ASSOC);

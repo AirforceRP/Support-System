@@ -185,5 +185,6 @@ if (isset($_GET['action'], $_GET['status']) && $_GET['action'] == 'update_status
     exit('{"msg":"Success"}');
 }
 // Encode results to JSON format
-exit('{"error":"No action provided!"}');
+exit('{"error":"No action provided! Please put in a Action"}');
+
 ?>

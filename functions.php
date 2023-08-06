@@ -68,6 +68,49 @@ function send_ticket_email($email, $id, $title, $msg, $priority, $category, $pri
         exit('Error: Message could not be sent. Mailer Error: ' . $mail->ErrorInfo);
     }
 }
+//<----WIP---->
+function process_incoming_email($email_content) {
+    // Parse the email and extract ticket information using regular expressions or any other method
+    $pattern = '/Ticket ID: (\d+)\s+Message: (.+)/';
+    if (preg_match($pattern, $email_content, $matches)) {
+        $ticket_id = $matches[1];
+        $message = $matches[2];
+
+        // Connect to the database using the pdo_connect_mysql() function from config.php
+        $pdo = pdo_connect_mysql();
+
+        // Check if the ticket exists in the database
+        $stmt = $pdo->prepare('SELECT * FROM tickets WHERE id = ?');
+        $stmt->execute([$ticket_id]);
+        $ticket = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($ticket) {
+            // The ticket exists, update the ticket with the new message
+            $stmt = $pdo->prepare('UPDATE tickets SET message = CONCAT(message, ?) WHERE id = ?');
+            $stmt->execute(["<br>Update from email: " . $message, $ticket_id]);
+            $stmt = $pdo->prepare('UPDATE tickets SET status = ?, priority = ? WHERE id = ?');
+            $stmt->execute([$new_status, $new_priority, $ticket_id]);
+            // Send a confirmation email back to the user
+            $user_email = $stmt = $pdo->prepare('SELECT * FROM accounts WHERE email = ?');; // Replace this with the email address of the user who sent the update
+            $subject = 'Ticket Update Confirmation';
+            $confirmation_message = nl2br("Thank you for updating your ticket. \n Your message has been added to the ticket.");
+
+            // Use the send_ticket_email function to send the confirmation email
+            send_ticket_email($user_email, $ticket_id, $subject, $confirmation_message, $ticket['priority'], $ticket['category'], $ticket['private'], $ticket['status'], 'update');
+        } else {
+
+            $error_message = "ERROR: Ticket not found, Please make Sure Ticket Number is the Same. Attemted Ticket ID: . $ticket_id . Please Fix if you are the Systems Admin for this server";
+            $log_file = "./function-errors-ticket-404.log";
+            error_log($error_message, 3, $log_file);
+        }
+    } else {
+        // Could not extract ticket information from the email content (invalid format), handle this case accordingly
+        $error_message = "ERROR: Could not extract ticket information, invalid format. $ticket_id . Please Fix if you are the Systems Admin for this server";
+            $log_file = "./function-errors-ticket-404.log";
+            error_log($error_message, 3, $log_file);
+    }
+}
+//<----END WIP---->
 // Template header, feel free to customize this
 function template_header($title) {
 $login_link = isset($_SESSION['account_loggedin']) ? '<a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>' : '<a href="login.php"><i class="fas fa-lock"></i>Login</a>';

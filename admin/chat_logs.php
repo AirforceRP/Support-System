@@ -111,6 +111,7 @@ $url = 'chat_logs.php?search=' . $search . '&acc_id=' . $acc_id;
                     <td>
                         <a href="chat_log.php?id=<?=$chat_log['id']?>" class="link1">View</a>
                         <a href="chat_logs.php?delete=<?=$chat_log['id']?>" class="link1" onclick="return confirm('Are you sure you want to delete this chat log?')">Delete</a>
+                        <a href="chat_logs.php?email=<?$chat_log['id'], ['account_sender_email']"
                     </td>
                 </tr>
                 <?php endforeach; ?>

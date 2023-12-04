@@ -1,5 +1,6 @@
 <?php
 include 'main.php';
+require 'emailfunct.php'
 // Check if delete
 if (isset($_GET['delete']) && $_SESSION['account_role'] == 'Admin') {
     $stmt = $pdo->prepare('DELETE c, m FROM conversations c LEFT JOIN messages m ON m.conversation_id = c.id WHERE c.id = ?');
@@ -111,7 +112,7 @@ $url = 'chat_logs.php?search=' . $search . '&acc_id=' . $acc_id;
                     <td>
                         <a href="chat_log.php?id=<?=$chat_log['id']?>" class="link1">View</a>
                         <a href="chat_logs.php?delete=<?=$chat_log['id']?>" class="link1" onclick="return confirm('Are you sure you want to delete this chat log?')">Delete</a>
-                        <a href="chat_logs.php?email=<?$chat_log['id']?>" class="link1" onclick="return confirm('Are you sure you want to email this chat log?')">Email</a>
+                        <a href="chat_logs.php?email=<?$chat_log['id']?>" class="link1" onclick="return confirm('Are you sure you want to email this chat log?') emailLogs();">Email</a>
                     </td>
                 </tr>
                 <?php endforeach; ?>

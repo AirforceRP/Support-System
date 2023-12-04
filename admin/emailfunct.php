@@ -1,3 +1,2 @@
 <?php
-require '';
-function emailLogs( $email, );
+require '../config.php';
